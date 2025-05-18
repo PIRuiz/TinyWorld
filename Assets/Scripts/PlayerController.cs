@@ -41,6 +41,9 @@ public class PlayerController : MonoBehaviour
     private float jumpForce = 3;
     [Tooltip("Controlador de gravedad")] [SerializeField] private GravityController gravityController;
     
+    [Header("Animación")]
+    [Tooltip("Animator")] [SerializeField] Animator animator;
+    
     [Header("Debug")]
     [Tooltip("Tiempo de ejecución")] [SerializeField]
     private float timer;
@@ -57,6 +60,9 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Saltando")] [SerializeField]
     private bool isJumping;
     
+    private static readonly int HSpeed = Animator.StringToHash("HSpeed");
+    private static readonly int Grounded = Animator.StringToHash("Grounded");
+
     /// <summary>
     /// Que ocurre al usar controles de movimiento
     /// </summary>
@@ -164,5 +170,8 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(inputDirection, surfaceUp);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f * Time.fixedDeltaTime);
         }
+        
+        animator.SetFloat(HSpeed, currentHorizontalVelocity.magnitude);
+        animator.SetBool(Grounded, isGrounded);
     }
 }
