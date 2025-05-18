@@ -506,7 +506,7 @@ MonoBehaviour:
   movementInput: {x: 0, y: 0}
   groundLayer3D:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   rb3D: {fileID: 317795418}
   my3DCollider: {fileID: 317795419}
   rayLenght: 0.2

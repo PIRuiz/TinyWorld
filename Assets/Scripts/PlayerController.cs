@@ -142,15 +142,18 @@ public class PlayerController : MonoBehaviour
                 targetVelocity += transform.forward * (movementInput.y * walkSpeed);
                 targetVelocity += transform.right * (movementInput.x * walkSpeed);
             }
+            var lookVector = transform.position + targetVelocity.normalized;
             targetVelocity += gravityController.gravityVector.normalized * (gravityController.gravity * 0.5f);
             velocity3D = Vector3.Lerp(velocity3D, targetVelocity, acceleration * Time.fixedDeltaTime);
             rb3D.linearVelocity = velocity3D;
-        }
-
-        if (movementInput != Vector2.zero)
-        {
-            transform.forward = transform.position + velocity3D;
-            transform.up = -gravityController.gravityVector;
+            if (movementInput != Vector2.zero)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(lookVector, -gravityController.gravityVector);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.fixedDeltaTime);
+                //transform.LookAt(lookVector, -gravityController.gravityVector);
+                //transform.forward = transform.position + velocity3D.normalized;
+                //transform.up = -gravityController.gravityVector;
+            }
         }
     }
 }
