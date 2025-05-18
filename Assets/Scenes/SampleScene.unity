@@ -234,6 +234,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &187946455
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -454,6 +456,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 0
+  applyGravity: 0
 --- !u!114 &317795422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -511,7 +515,7 @@ MonoBehaviour:
   my3DCollider: {fileID: 317795419}
   rayLenght: 0.2
   coyoteTime: 0.25
-  jumpForce: 3
+  jumpForce: 5
   gravityController: {fileID: 317795421}
   timer: 0
   coyoteTimer: 0
@@ -1194,6 +1198,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &904601540
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1348,6 +1354,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &956308914
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1667,6 +1675,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &1207592974
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -35943,6 +35953,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &1320602199
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36097,6 +36109,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &1337071983
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -36361,6 +36375,8 @@ MonoBehaviour:
   gravity: 9.81
   autoOrientForce: 1
   rb: {fileID: 0}
+  autoRotate: 1
+  applyGravity: 1
 --- !u!54 &1723052717
 Rigidbody:
   m_ObjectHideFlags: 0

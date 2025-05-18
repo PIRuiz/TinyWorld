@@ -11,6 +11,8 @@ public class GravityController : MonoBehaviour
     [Tooltip("Fuerza de la gravedad")] [SerializeField] public float gravity = 9.81f;
     [Tooltip("Fuerza de la auto orientación")] [SerializeField] private float autoOrientForce = 1f;
     [Tooltip("Rigidbody")] [SerializeField] private Rigidbody rb;
+    [Tooltip("Girar Automáticamente")] [SerializeField] private bool autoRotate = true;
+    [Tooltip("Aplicar Gravedad")] [SerializeField] private bool applyGravity = true;
 
     private void Start()
     {
@@ -29,7 +31,8 @@ public class GravityController : MonoBehaviour
     private void ProcessGravity()
     {
         gravityVector = gravityOrigin.position - transform.position;
-        rb.AddForce(gravityVector.normalized * (gravity * rb.mass));
+        if (applyGravity)
+            rb.AddForce(gravityVector.normalized * (gravity * rb.mass));
     }
 
     /// <summary>
@@ -38,6 +41,7 @@ public class GravityController : MonoBehaviour
     private void ProcessRotation()
     {
         var orientation = Quaternion.FromToRotation(-transform.up, gravityVector) * transform.rotation;
-        transform.rotation = Quaternion.Slerp(transform.rotation, orientation, Time.deltaTime * autoOrientForce);
+        if (autoRotate)
+            transform.rotation = Quaternion.Slerp(transform.rotation, orientation, Time.deltaTime * autoOrientForce);
     }
 }

@@ -66,6 +66,19 @@ public class PlayerController : MonoBehaviour
         movementInput = input.Get<Vector2>();
     }
     
+    /// <summary>
+    /// Que ocurre al usar el botón saltar
+    /// </summary>
+    /// <param name="input">Valor de entrada</param>
+    private void OnJump(InputValue input)
+    {
+        if (input.isPressed)
+        {
+            if (!isGrounded && !isCoyoteTime) return;
+            isJumping = true;
+        }
+    }
+    
     private void Start()
     {
         rb3D.maxLinearVelocity = maxSpeed;
@@ -142,18 +155,70 @@ public class PlayerController : MonoBehaviour
                 targetVelocity += transform.forward * (movementInput.y * walkSpeed);
                 targetVelocity += transform.right * (movementInput.x * walkSpeed);
             }
-            var lookVector = transform.position + targetVelocity.normalized;
-            targetVelocity += gravityController.gravityVector.normalized * (gravityController.gravity * 0.5f);
             velocity3D = Vector3.Lerp(velocity3D, targetVelocity, acceleration * Time.fixedDeltaTime);
             rb3D.linearVelocity = velocity3D;
-            if (movementInput != Vector2.zero)
-            {
-                Quaternion lookRotation = Quaternion.LookRotation(lookVector, -gravityController.gravityVector);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.fixedDeltaTime);
-                //transform.LookAt(lookVector, -gravityController.gravityVector);
-                //transform.forward = transform.position + velocity3D.normalized;
-                //transform.up = -gravityController.gravityVector;
-            }
         }
+        if (isJumping)
+        {
+            //rb3D.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb3D.AddForce(-gravityController.gravityVector * jumpForce, ForceMode.Impulse);
+            isJumping = false;
+            isCoyoteTime = false;
+        }
+        else
+        {
+            rb3D.AddForce(gravityController.gravityVector.normalized * gravityController.gravity, ForceMode.Force);
+        }
+        if (movementInput != Vector2.zero)
+        {
+            Vector3 movementDirection = (transform.forward * movementInput.y + transform.right * movementInput.x).normalized;
+            Vector3 surfaceUp = -gravityController.gravityVector.normalized;
+            movementDirection = Vector3.ProjectOnPlane(movementDirection, surfaceUp).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(movementDirection, surfaceUp);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f * Time.fixedDeltaTime);
+        }
+        /* Chat GPT:
+        float acceleration = isGrounded ? groundAcceleration : airAcceleration;
+        float deceleration = isGrounded ? groundDeceleration : airDeceleration;
+
+        Vector3 velocity = rb3D.linearVelocity;
+    
+        // Movimiento horizontal (X-Z en planeta curvo)
+        Vector3 surfaceUp = -gravityController.gravityVector.normalized;
+        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, surfaceUp).normalized;
+        Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
+
+        Vector3 inputDirection = (forward * movementInput.y + right * movementInput.x).normalized;
+
+        Vector3 targetHorizontalVelocity = inputDirection * (isRunning ? runSpeed : walkSpeed);
+        Vector3 currentHorizontalVelocity = Vector3.ProjectOnPlane(velocity, surfaceUp);
+
+        Vector3 newHorizontalVelocity = Vector3.Lerp(currentHorizontalVelocity, targetHorizontalVelocity, acceleration * Time.fixedDeltaTime);
+
+        // Mantén componente vertical
+        Vector3 verticalVelocity = Vector3.Project(velocity, surfaceUp);
+
+        // Combina
+        rb3D.linearVelocity = newHorizontalVelocity + verticalVelocity;
+
+        // Aplicar salto
+        if (isJumping)
+        {
+            rb3D.AddForce(-surfaceUp * jumpForce, ForceMode.Impulse);
+            isJumping = false;
+            isCoyoteTime = false;
+        }
+        else
+        {
+            rb3D.AddForce(gravityController.gravityVector.normalized * gravityController.gravity, ForceMode.Force);
+        }
+
+        // Rotación del personaje
+        if (movementInput != Vector2.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(inputDirection, surfaceUp);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f * Time.fixedDeltaTime);
+        }
+        */
     }
 }
