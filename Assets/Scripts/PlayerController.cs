@@ -125,100 +125,44 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void MovePlayer()
     {
-        float acceleration;
-        float deceleration;
-        if (isGrounded)
-        {
-            acceleration = groundAcceleration;
-            deceleration = groundDeceleration;
-        }
-        else
-        {
-            acceleration = airAcceleration;
-            deceleration = airDeceleration;
-        }
-        
-        if (movementInput == Vector2.zero)
-        {
-            velocity3D = Vector3.Lerp(velocity3D, Vector3.zero, deceleration * Time.fixedDeltaTime);
-        }
-        else
-        {
-            var targetVelocity = Vector3.zero;
-            if (isRunning)
-            {
-                targetVelocity += transform.forward * (movementInput.y * runSpeed);
-                targetVelocity += transform.right * (movementInput.x * runSpeed);
-            }
-            else
-            {
-                targetVelocity += transform.forward * (movementInput.y * walkSpeed);
-                targetVelocity += transform.right * (movementInput.x * walkSpeed);
-            }
-            velocity3D = Vector3.Lerp(velocity3D, targetVelocity, acceleration * Time.fixedDeltaTime);
-            rb3D.linearVelocity = velocity3D;
-        }
-        if (isJumping)
-        {
-            //rb3D.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            rb3D.AddForce(-gravityController.gravityVector * jumpForce, ForceMode.Impulse);
-            isJumping = false;
-            isCoyoteTime = false;
-        }
-        else
-        {
-            rb3D.AddForce(gravityController.gravityVector.normalized * gravityController.gravity, ForceMode.Force);
-        }
-        if (movementInput != Vector2.zero)
-        {
-            Vector3 movementDirection = (transform.forward * movementInput.y + transform.right * movementInput.x).normalized;
-            Vector3 surfaceUp = -gravityController.gravityVector.normalized;
-            movementDirection = Vector3.ProjectOnPlane(movementDirection, surfaceUp).normalized;
-            Quaternion targetRotation = Quaternion.LookRotation(movementDirection, surfaceUp);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f * Time.fixedDeltaTime);
-        }
-        /* Chat GPT:
         float acceleration = isGrounded ? groundAcceleration : airAcceleration;
         float deceleration = isGrounded ? groundDeceleration : airDeceleration;
-
-        Vector3 velocity = rb3D.linearVelocity;
-    
-        // Movimiento horizontal (X-Z en planeta curvo)
         Vector3 surfaceUp = -gravityController.gravityVector.normalized;
         Vector3 forward = Vector3.ProjectOnPlane(transform.forward, surfaceUp).normalized;
         Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
-
+        
         Vector3 inputDirection = (forward * movementInput.y + right * movementInput.x).normalized;
-
+        
         Vector3 targetHorizontalVelocity = inputDirection * (isRunning ? runSpeed : walkSpeed);
-        Vector3 currentHorizontalVelocity = Vector3.ProjectOnPlane(velocity, surfaceUp);
-
-        Vector3 newHorizontalVelocity = Vector3.Lerp(currentHorizontalVelocity, targetHorizontalVelocity, acceleration * Time.fixedDeltaTime);
-
-        // Mantén componente vertical
-        Vector3 verticalVelocity = Vector3.Project(velocity, surfaceUp);
-
-        // Combina
-        rb3D.linearVelocity = newHorizontalVelocity + verticalVelocity;
-
-        // Aplicar salto
+        Vector3 currentHorizontalVelocity = Vector3.ProjectOnPlane(rb3D.linearVelocity, surfaceUp);
+        
+        Vector3 newHorizontalVelocity = Vector3.Lerp(
+            currentHorizontalVelocity,
+            targetHorizontalVelocity,
+            acceleration * Time.fixedDeltaTime);
+        
         if (isJumping)
         {
-            rb3D.AddForce(-surfaceUp * jumpForce, ForceMode.Impulse);
+            rb3D.AddForce(surfaceUp * jumpForce, ForceMode.Impulse);
             isJumping = false;
             isCoyoteTime = false;
         }
         else
         {
-            rb3D.AddForce(gravityController.gravityVector.normalized * gravityController.gravity, ForceMode.Force);
+            rb3D.AddForce(-surfaceUp * gravityController.gravity, ForceMode.Force);
         }
+        
+        Vector3 verticalVelocity = Vector3.Project(rb3D.linearVelocity, surfaceUp);
 
-        // Rotación del personaje
+        if (!isJumping)
+        {
+            rb3D.linearVelocity = newHorizontalVelocity + verticalVelocity;
+        }
+        
         if (movementInput != Vector2.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(inputDirection, surfaceUp);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 1f * Time.fixedDeltaTime);
         }
-        */
     }
 }
