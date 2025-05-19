@@ -1,3 +1,5 @@
+using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +9,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
+    #region Variables
+    
     [Header("Movimiento Horizontal")]
     [Tooltip("Velocidad de movimiento. Andar")] [SerializeField] [Range(1, 20f)]
     private float walkSpeed = 10f;
@@ -43,6 +47,9 @@ public class PlayerController : MonoBehaviour
     
     [Header("Animación")]
     [Tooltip("Animator")] [SerializeField] Animator animator;
+    [Tooltip("Camara de persecución")] [SerializeField] private CinemachineThirdPersonFollow followCamera;
+    [Tooltip("Distancia de la cámara normal")] [SerializeField] private float normalCameraDistance = 3f;
+    [Tooltip("Distancia de la cámara en sprint")] [SerializeField] private float sprintCameraDistance = 2f;
     
     [Header("Debug")]
     [Tooltip("Tiempo de ejecución")] [SerializeField]
@@ -62,6 +69,9 @@ public class PlayerController : MonoBehaviour
     
     private static readonly int HSpeed = Animator.StringToHash("HSpeed");
     private static readonly int Grounded = Animator.StringToHash("Grounded");
+    #endregion
+    
+    #region Input
 
     /// <summary>
     /// Que ocurre al usar controles de movimiento
@@ -85,9 +95,37 @@ public class PlayerController : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Que ocurre al usar el botón de sprint
+    /// </summary>
+    /// <param name="input">Valor de entrada</param>
+    private void OnSprint(InputValue input)
+    {
+        isRunning = input.isPressed;
+    }
+    
+    #endregion
+
+    #region Unity
+    
     private void Start()
     {
         rb3D.maxLinearVelocity = maxSpeed;
+    }
+
+    private void Update()
+    {
+        timer += Time.deltaTime;
+        if (isRunning)
+        {
+            if (followCamera.CameraDistance > sprintCameraDistance)
+                followCamera.CameraDistance -= Time.deltaTime;
+        }
+        else
+        {
+            if (followCamera.CameraDistance < normalCameraDistance)
+                followCamera.CameraDistance += Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()
@@ -95,6 +133,10 @@ public class PlayerController : MonoBehaviour
         IsGrounded();
         MovePlayer();
     }
+    
+    #endregion
+    
+    #region Movement
 
     /// <summary>
     /// Comprobar si tocamos el suelo y si estamos en tiempo coyote
@@ -127,7 +169,7 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Movimiento
+    /// Movimiento del jugador
     /// </summary>
     private void MovePlayer()
     {
@@ -141,11 +183,23 @@ public class PlayerController : MonoBehaviour
         
         Vector3 targetHorizontalVelocity = inputDirection * (isRunning ? runSpeed : walkSpeed);
         Vector3 currentHorizontalVelocity = Vector3.ProjectOnPlane(rb3D.linearVelocity, surfaceUp);
+
+        Vector3 newHorizontalVelocity;
         
-        Vector3 newHorizontalVelocity = Vector3.Lerp(
-            currentHorizontalVelocity,
-            targetHorizontalVelocity,
-            acceleration * Time.fixedDeltaTime);
+        if (movementInput == Vector2.zero)
+        {
+            newHorizontalVelocity = Vector3.Lerp(
+                currentHorizontalVelocity,
+                (inputDirection * 0),
+                deceleration * Time.fixedDeltaTime);
+        }
+        else
+        {
+            newHorizontalVelocity = Vector3.Lerp(
+                currentHorizontalVelocity,
+                targetHorizontalVelocity,
+                acceleration * Time.fixedDeltaTime);
+        }
         
         if (isJumping)
         {
@@ -174,4 +228,5 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat(HSpeed, currentHorizontalVelocity.magnitude);
         animator.SetBool(Grounded, isGrounded);
     }
+    #endregion Movement
 }
