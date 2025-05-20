@@ -177,7 +177,8 @@ public class PlayerController : MonoBehaviour
         float deceleration = isGrounded ? groundDeceleration : airDeceleration;
         Vector3 surfaceUp = -gravityController.gravityVector.normalized;
         Vector3 forward = Vector3.ProjectOnPlane(transform.forward, surfaceUp).normalized;
-        Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
+        Vector3 right = Vector3.ProjectOnPlane(transform.right, surfaceUp).normalized;
+        //Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
         
         Vector3 inputDirection = (forward * movementInput.y + right * movementInput.x).normalized;
         
@@ -206,11 +207,11 @@ public class PlayerController : MonoBehaviour
             rb3D.AddForce(surfaceUp * jumpForce, ForceMode.Impulse);
             isJumping = false;
             isCoyoteTime = false;
-        }
+        }/*
         else
         {
             rb3D.AddForce(-surfaceUp * gravityController.gravity, ForceMode.Force);
-        }
+        }*/
         
         Vector3 verticalVelocity = Vector3.Project(rb3D.linearVelocity, surfaceUp);
 
