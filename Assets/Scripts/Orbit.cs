@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Orbita un objeto sobre un transform origen
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class Orbit : MonoBehaviour
 {

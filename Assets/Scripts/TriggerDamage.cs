@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Causa daño al jugador al entrar en el trigger
+/// </summary>
 public class TriggerDamage : MonoBehaviour
 {
     [Tooltip("Daño a realizar")] [SerializeField] [Range(0, 10)] private int damageDealt = 1;
@@ -22,7 +25,7 @@ public class TriggerDamage : MonoBehaviour
             _timer += Time.deltaTime;
             if (_timer >= 1)
             {
-                player.TakeDamage(damageDealt, other.ClosestPointOnBounds(player.transform.position));
+                player.TakeDamage(damageDealt, transform.position);
                 _timer = 0;
             }
             

@@ -1,6 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Controla la lógica de las balas
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
@@ -30,5 +34,10 @@ public class Bullet : MonoBehaviour
     private void OnEnable()
     {
         timer = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.gameObject.CompareTag("Enemy")) gameObject.SetActive(false);
     }
 }

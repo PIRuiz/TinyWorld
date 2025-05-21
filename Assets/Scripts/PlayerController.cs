@@ -53,6 +53,10 @@ public class PlayerController : MonoBehaviour, IHealth
     
     [Header("Vida")]
     [Tooltip("Vida inicial del jugador")] [SerializeField] [Range(1, 100)] private int maxHealth = 10;
+
+    [Header("Audio")]
+    [Tooltip("SFX daño")] [SerializeField] private AudioClip sfxDamage;
+    [Tooltip("Audio Source")] [SerializeField] private AudioSource audioSource;
     
     [Header("Debug")]
     [Tooltip("Tiempo de ejecución")] [SerializeField] private float timer;
@@ -185,7 +189,7 @@ public class PlayerController : MonoBehaviour, IHealth
         Vector3 right = Vector3.ProjectOnPlane(transform.right, surfaceUp).normalized;
         //Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
         
-        Vector3 inputDirection = (forward * movementInput.y + right * movementInput.x).normalized;
+        Vector3 inputDirection = forward * movementInput.y + right * movementInput.x;
         
         Vector3 targetHorizontalVelocity = inputDirection * (isRunning ? runSpeed : walkSpeed);
         Vector3 currentHorizontalVelocity = Vector3.ProjectOnPlane(rb3D.linearVelocity, surfaceUp);
@@ -279,6 +283,7 @@ public class PlayerController : MonoBehaviour, IHealth
         Health -= amount;
         if (Health <= 0) HandleDeath();
         OnHealthChange.Invoke();
+        audioSource.PlayOneShot(sfxDamage);
     }
 
     /// <summary>
@@ -307,7 +312,9 @@ public class PlayerController : MonoBehaviour, IHealth
     /// </summary>
     public void HandleDeath()
     {
-
+        RestoreHealth();
+        var respawn = GameObject.FindGameObjectWithTag("Respawn");
+        transform.position = respawn.transform.position;
     }
 
     #endregion Vida
