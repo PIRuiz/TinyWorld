@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 8532807058407152293}
   - component: {fileID: 6355911686159295315}
   - component: {fileID: 5186182846411863930}
+  - component: {fileID: -7522598688793754365}
   m_Layer: 0
   m_Name: Alien
   m_TagString: Player
@@ -245,6 +246,7 @@ MonoBehaviour:
   followCamera: {fileID: 0}
   normalCameraDistance: 3
   sprintCameraDistance: 2
+  maxHealth: 10
   timer: 0
   coyoteTimer: 0
   isRunning: 0
@@ -252,6 +254,8 @@ MonoBehaviour:
   isCoyoteTime: 0
   velocity3D: {x: 0, y: 0, z: 0}
   isJumping: 0
+  isDamaged: 0
+  hitVector: {x: 0, y: 0, z: 0}
 --- !u!114 &5186182846411863930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,6 +286,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &-7522598688793754365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4907717001991255460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b712544c7adf8b44193ae74aa03e727a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hBar: {fileID: 0}
+  fullColor: {r: 0, g: 1, b: 0, a: 1}
+  halfColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  emptyColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1001 &3003230897319931605
 PrefabInstance:
   m_ObjectHideFlags: 0

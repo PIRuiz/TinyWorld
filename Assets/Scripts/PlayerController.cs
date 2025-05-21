@@ -1,13 +1,13 @@
-using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 /// <summary>
 /// Controlador del protagonista
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHealth
 {
     #region Variables
     
@@ -51,21 +51,19 @@ public class PlayerController : MonoBehaviour
     [Tooltip("Distancia de la cámara normal")] [SerializeField] private float normalCameraDistance = 3f;
     [Tooltip("Distancia de la cámara en sprint")] [SerializeField] private float sprintCameraDistance = 2f;
     
+    [Header("Vida")]
+    [Tooltip("Vida inicial del jugador")] [SerializeField] [Range(1, 100)] private int maxHealth = 10;
+    
     [Header("Debug")]
-    [Tooltip("Tiempo de ejecución")] [SerializeField]
-    private float timer;
-    [Tooltip("Cuando se desactiva el tiempo de Coyote")] [SerializeField]
-    private float coyoteTimer;
-    [Tooltip("Estamos corriendo")] [SerializeField]
-    private bool isRunning;
-    [Tooltip("Estamos tocando el suelo")] [SerializeField]
-    private bool isGrounded;
-    [Tooltip("Estamos en tiempo de coyote")] [SerializeField]
-    private bool isCoyoteTime;
-    [Tooltip("Velocidad 3D")] [SerializeField]
-    private Vector3 velocity3D;
-    [Tooltip("Saltando")] [SerializeField]
-    private bool isJumping;
+    [Tooltip("Tiempo de ejecución")] [SerializeField] private float timer;
+    [Tooltip("Cuando se desactiva el tiempo de Coyote")] [SerializeField] private float coyoteTimer;
+    [Tooltip("Estamos corriendo")] [SerializeField] private bool isRunning;
+    [Tooltip("Estamos tocando el suelo")] [SerializeField] private bool isGrounded;
+    [Tooltip("Estamos en tiempo de coyote")] [SerializeField] private bool isCoyoteTime;
+    [Tooltip("Velocidad 3D")] [SerializeField] private Vector3 velocity3D;
+    [Tooltip("Saltando")] [SerializeField] private bool isJumping;
+    [Tooltip("Dañado")] [SerializeField] private bool isDamaged;
+    [Tooltip("Vector del golpe")] [SerializeField] private Vector3 hitVector;
     
     private static readonly int HSpeed = Animator.StringToHash("HSpeed");
     private static readonly int Grounded = Animator.StringToHash("Grounded");
@@ -107,7 +105,14 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Unity
-    
+
+    private void Awake()
+    {
+        OnHealthChange ??= new UnityEvent();
+        MaxHealth = maxHealth;
+        RestoreHealth();
+    }
+
     private void Start()
     {
         rb3D.maxLinearVelocity = maxSpeed;
@@ -212,10 +217,16 @@ public class PlayerController : MonoBehaviour
         {
             rb3D.AddForce(-surfaceUp * gravityController.gravity, ForceMode.Force);
         }*/
+
+        if (isDamaged)
+        {
+            rb3D.AddForce(hitVector * (jumpForce), ForceMode.Impulse);
+            isDamaged = false;
+        }
         
         Vector3 verticalVelocity = Vector3.Project(rb3D.linearVelocity, surfaceUp);
 
-        if (!isJumping)
+        if (!isJumping && !isDamaged)
         {
             rb3D.linearVelocity = newHorizontalVelocity + verticalVelocity;
         }
@@ -230,4 +241,74 @@ public class PlayerController : MonoBehaviour
         animator.SetBool(Grounded, isGrounded);
     }
     #endregion Movement
+    
+    #region Vida
+
+    /// <summary>
+    /// Cantidad de vida actual
+    /// </summary>
+    public int Health { get; private set; }
+
+    /// <summary>
+    /// Salud Máxima
+    /// </summary>
+    public int MaxHealth { get; private set; }
+
+    /// <summary>
+    /// Evento cambiar la cantidad de vida
+    /// </summary>
+    public UnityEvent OnHealthChange { get; private set; }
+
+    /// <summary>
+    /// Configurar la salud máxima
+    /// </summary>
+    /// <param name="amount">Nueva salud máxima</param>
+    public void SetMaxHealth(int amount)
+    {
+        MaxHealth = amount;
+        RestoreHealth();
+        OnHealthChange.Invoke();
+    }
+
+    /// <summary>
+    /// Recibir daño
+    /// </summary>
+    /// <param name="amount">Daño recibido</param>
+    public void TakeDamage(int amount)
+    {
+        Health -= amount;
+        if (Health <= 0) HandleDeath();
+        OnHealthChange.Invoke();
+    }
+
+    /// <summary>
+    /// Recibir daño con posición
+    /// </summary>
+    /// <param name="amount">Daño recibido</param>
+    /// <param name="damageOrigin">Origen del daño</param>
+    public void TakeDamage(int amount, Vector3 damageOrigin)
+    {
+        TakeDamage(amount);
+        isDamaged = true;
+        hitVector = (transform.position + transform.up) - damageOrigin;
+    }
+
+    /// <summary>
+    /// Reiniciar salud al máximo
+    /// </summary>
+    public void RestoreHealth()
+    {
+        Health = MaxHealth;
+        OnHealthChange.Invoke();
+    }
+
+    /// <summary>
+    /// Controlar muerte
+    /// </summary>
+    public void HandleDeath()
+    {
+
+    }
+
+    #endregion Vida
 }
