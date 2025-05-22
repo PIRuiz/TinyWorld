@@ -20,7 +20,9 @@ public class PlayerController : MonoBehaviour, IHealth
     [Tooltip("Deceleración. Aire")] [SerializeField] [Range(1, 20f)] private float airDeceleration = 10f;
     [Tooltip("Máxima velocidad")] [SerializeField] [Range(1, 20f)] private float maxSpeed = 20f;
     [Tooltip("Vector de movimiento vertical")] [SerializeField] private Vector2 movementInput;
-    [Tooltip("Suavizado de movimiento horizontal")] [SerializeField] [Range(0.1f, 1f)] private float horizontalSmooth = 0.5f;
+    [Tooltip("Suavizado de movimiento horizontal")] [SerializeField] [Range(0.1f, 1f)]
+    private float horizontalSmooth = 0.5f;
+    [Tooltip("Movimiento de tanque")] public bool tankControl;
     
     [Header("Colisiones")]
     [Tooltip("Capa de terreno 3D")] [SerializeField]
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour, IHealth
 
     [Header("Audio")]
     [Tooltip("SFX daño")] [SerializeField] private AudioClip sfxDamage;
+    [Tooltip("SFX salto")] [SerializeField] private AudioClip sfxJump;
     [Tooltip("Audio Source")] [SerializeField] private AudioSource audioSource;
     
     [Header("Debug")]
@@ -66,6 +69,8 @@ public class PlayerController : MonoBehaviour, IHealth
     
     private static readonly int HSpeed = Animator.StringToHash("HSpeed");
     private static readonly int Grounded = Animator.StringToHash("Grounded");
+    
+    private Camera _mainCamera;
     #endregion
     
     #region Input
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour, IHealth
         {
             if (!isGrounded && !isCoyoteTime) return;
             isJumping = true;
+            audioSource.PlayOneShot(sfxJump);
         }
     }
     
@@ -110,6 +116,7 @@ public class PlayerController : MonoBehaviour, IHealth
         OnHealthChange ??= new UnityEvent();
         MaxHealth = maxHealth;
         RestoreHealth();
+        _mainCamera = Camera.main;
     }
 
     private void Start()
@@ -172,8 +179,18 @@ public class PlayerController : MonoBehaviour, IHealth
         float acceleration = isGrounded ? groundAcceleration : airAcceleration;
         float deceleration = isGrounded ? groundDeceleration : airDeceleration;
         Vector3 surfaceUp = -gravityController.gravityVector.normalized;
-        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, surfaceUp).normalized;
-        Vector3 right = Vector3.ProjectOnPlane(transform.right, surfaceUp).normalized;
+        Vector3 forward;
+        Vector3 right;
+        if (tankControl)
+        {
+            forward = Vector3.ProjectOnPlane(transform.forward, surfaceUp).normalized;
+            right = Vector3.ProjectOnPlane(transform.right, surfaceUp).normalized;
+        }
+        else
+        {
+            forward = Vector3.ProjectOnPlane(_mainCamera.transform.forward, surfaceUp).normalized;
+            right = Vector3.ProjectOnPlane(_mainCamera.transform.right, surfaceUp).normalized;
+        }
         //Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
         
         Vector3 inputDirection = forward * movementInput.y + right * (movementInput.x * horizontalSmooth);

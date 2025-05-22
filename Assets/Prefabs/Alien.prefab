@@ -234,6 +234,8 @@ MonoBehaviour:
   airDeceleration: 10
   maxSpeed: 20
   movementInput: {x: 0, y: 0}
+  horizontalSmooth: 0.5
+  tankControl: 0
   groundLayer3D:
     serializedVersion: 2
     m_Bits: 17
@@ -248,8 +250,10 @@ MonoBehaviour:
   normalCameraDistance: 3
   sprintCameraDistance: 2
   renderer3d: {fileID: 5341463940011028174}
+  invulnerableDuration: 1
   maxHealth: 10
   sfxDamage: {fileID: 8300000, guid: 404ca2d1d21730044a31ca5f727a317b, type: 3}
+  sfxJump: {fileID: 8300000, guid: e62dfc92b3df56742adf2307e205c50b, type: 3}
   audioSource: {fileID: 1585093569164037824}
   timer: 0
   coyoteTimer: 0
@@ -259,8 +263,7 @@ MonoBehaviour:
   velocity3D: {x: 0, y: 0, z: 0}
   isJumping: 0
   isDamaged: 0
-  isBlinking: 0
-  blinkingTime: 1
+  isInvulnerable: 0
   blinkingTimer: 0
   hitVector: {x: 0, y: 0, z: 0}
 --- !u!114 &5186182846411863930

@@ -1,2 +1,4 @@
 Hurt SFX Sonniss.com - GDC 2016 - Bottle Rocket FX - Grunt_Pain_Male_BB_10_SCREAM LIBRARY_BRFX-004
+10 Skyboxes Pack - Wello Soft - https://assetstore.unity.com/packages/2d/textures-materials/sky/10-skyboxes-pack-day-night-32236
+Water Stylized Shader Orto & Perspective Camera - AureDevGames - https://assetstore.unity.com/packages/vfx/shaders/water-stylized-shader-orto-perspective-camera-297566
 Kenney https://www.kenney.nl/ 
