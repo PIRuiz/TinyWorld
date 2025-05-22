@@ -12,22 +12,15 @@ public class PlayerController : MonoBehaviour, IHealth
     #region Variables
     
     [Header("Movimiento Horizontal")]
-    [Tooltip("Velocidad de movimiento. Andar")] [SerializeField] [Range(1, 20f)]
-    private float walkSpeed = 10f;
-    [Tooltip("Velocidad de movimiento. Correr")] [SerializeField] [Range(1, 30f)]
-    private float runSpeed = 20f;
-    [Tooltip("Aceleración. Tierra")] [SerializeField] [Range(1, 20f)]
-    private float groundAcceleration = 5f;
-    [Tooltip("Deceleración. Tierra")] [SerializeField] [Range(1, 20f)]
-    private float groundDeceleration = 20f;
-    [Tooltip("Aceleración. Aire")] [SerializeField] [Range(1, 20f)]
-    private float airAcceleration = 2.5f;
-    [Tooltip("Deceleración. Aire")] [SerializeField] [Range(1, 20f)]
-    private float airDeceleration = 10f;
-    [Tooltip("Máxima velocidad")] [SerializeField] [Range(1, 20f)]
-    private float maxSpeed = 20f;
-    [Tooltip("Vector de movimiento vertical")] [SerializeField]
-    private Vector2 movementInput;
+    [Tooltip("Velocidad de movimiento. Andar")] [SerializeField] [Range(1, 20f)] private float walkSpeed = 10f;
+    [Tooltip("Velocidad de movimiento. Correr")] [SerializeField] [Range(1, 30f)] private float runSpeed = 20f;
+    [Tooltip("Aceleración. Tierra")] [SerializeField] [Range(1, 20f)] private float groundAcceleration = 5f;
+    [Tooltip("Deceleración. Tierra")] [SerializeField] [Range(1, 20f)] private float groundDeceleration = 20f;
+    [Tooltip("Aceleración. Aire")] [SerializeField] [Range(1, 20f)] private float airAcceleration = 2.5f;
+    [Tooltip("Deceleración. Aire")] [SerializeField] [Range(1, 20f)] private float airDeceleration = 10f;
+    [Tooltip("Máxima velocidad")] [SerializeField] [Range(1, 20f)] private float maxSpeed = 20f;
+    [Tooltip("Vector de movimiento vertical")] [SerializeField] private Vector2 movementInput;
+    [Tooltip("Suavizado de movimiento horizontal")] [SerializeField] [Range(0.1f, 1f)] private float horizontalSmooth = 0.5f;
     
     [Header("Colisiones")]
     [Tooltip("Capa de terreno 3D")] [SerializeField]
@@ -39,11 +32,9 @@ public class PlayerController : MonoBehaviour, IHealth
     private float rayLenght = .2f;
     
     [Header("Movimiento Vertical")]
-    [Tooltip("Duración de tiempo de coyote")] [SerializeField] [Range(0, 2f)]
-    private float coyoteTime = .25f;
-    [Tooltip("Altura de Salto en Unidades de Unity")] [SerializeField] [Range(0.01f, 100)]
-    private float jumpForce = 3;
-    [Tooltip("Controlador de gravedad")] [SerializeField] private GravityController gravityController;
+    [Tooltip("Duración de tiempo de coyote")] [SerializeField] [Range(0, 2f)] private float coyoteTime = .25f;
+    [Tooltip("Altura de Salto en Unidades de Unity")] [SerializeField] [Range(0.01f, 100)] private float jumpForce = 3;
+    [Tooltip("Controlador de gravedad")] public GravityController gravityController;
     
     [Header("Animación")]
     [Tooltip("Animator")] [SerializeField] private Animator animator;
@@ -185,7 +176,7 @@ public class PlayerController : MonoBehaviour, IHealth
         Vector3 right = Vector3.ProjectOnPlane(transform.right, surfaceUp).normalized;
         //Vector3 right = Vector3.Cross(surfaceUp, forward).normalized;
         
-        Vector3 inputDirection = forward * movementInput.y + right * movementInput.x;
+        Vector3 inputDirection = forward * movementInput.y + right * (movementInput.x * horizontalSmooth);
         
         Vector3 targetHorizontalVelocity = inputDirection * (isRunning ? runSpeed : walkSpeed);
         Vector3 currentHorizontalVelocity = Vector3.ProjectOnPlane(rb3D.linearVelocity, surfaceUp);
