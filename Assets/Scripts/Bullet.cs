@@ -18,12 +18,14 @@ public class Bullet : MonoBehaviour
     
     [Tooltip("Pool")] public ObjPool pool;
 
+    [Tooltip("Vector de movimiento")] [SerializeField] public Vector3 moveVector;
+
     // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
         if (timer >= duration) gameObject.SetActive(false);
-        rb.MovePosition(transform.position + transform.forward * (speed * Time.deltaTime));
+        rb.linearVelocity = moveVector * speed;
     }
 
     private void OnDisable()

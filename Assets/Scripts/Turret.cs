@@ -107,10 +107,15 @@ public class Turret : MonoBehaviour
         if (targetLocked && nextShoot <= Time.time)
         {
             var bullet = bulletPool.Pool.Get();
+            var lookVector = player.transform.position + player.transform.up.normalized;
             bullet.transform.position = firePosition.position;
-            bullet.transform.LookAt(player.transform.position + player.transform.up.normalized);
+            bullet.transform.LookAt(lookVector);
             bullet.transform.parent = null;
-            if (bullet.TryGetComponent<Bullet>(out var bulletScript)) bulletScript.pool = bulletPool;
+            if (bullet.TryGetComponent<Bullet>(out var bulletScript))
+            {
+                bulletScript.pool = bulletPool;
+                bulletScript.moveVector = lookVector - firePosition.position;
+            }
             nextShoot = Time.time + rateOfFire;
         }
     }
