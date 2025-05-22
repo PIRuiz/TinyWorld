@@ -247,6 +247,7 @@ MonoBehaviour:
   followCamera: {fileID: 0}
   normalCameraDistance: 3
   sprintCameraDistance: 2
+  renderer3d: {fileID: 5341463940011028174}
   maxHealth: 10
   sfxDamage: {fileID: 8300000, guid: 404ca2d1d21730044a31ca5f727a317b, type: 3}
   audioSource: {fileID: 1585093569164037824}
@@ -258,6 +259,9 @@ MonoBehaviour:
   velocity3D: {x: 0, y: 0, z: 0}
   isJumping: 0
   isDamaged: 0
+  isBlinking: 0
+  blinkingTime: 1
+  blinkingTimer: 0
   hitVector: {x: 0, y: 0, z: 0}
 --- !u!114 &5186182846411863930
 MonoBehaviour:
@@ -1028,6 +1032,11 @@ Transform:
 --- !u!4 &3325670742850668862 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07eb79749773a4040a4c4c4acdbc4b0e, type: 3}
+  m_PrefabInstance: {fileID: 3003230897319931605}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &5341463940011028174 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2049929814205202405, guid: 07eb79749773a4040a4c4c4acdbc4b0e, type: 3}
   m_PrefabInstance: {fileID: 3003230897319931605}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6831392958119598219 stripped

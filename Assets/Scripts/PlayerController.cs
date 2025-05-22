@@ -46,10 +46,12 @@ public class PlayerController : MonoBehaviour, IHealth
     [Tooltip("Controlador de gravedad")] [SerializeField] private GravityController gravityController;
     
     [Header("Animación")]
-    [Tooltip("Animator")] [SerializeField] Animator animator;
+    [Tooltip("Animator")] [SerializeField] private Animator animator;
     [Tooltip("Camara de persecución")] [SerializeField] private CinemachineThirdPersonFollow followCamera;
     [Tooltip("Distancia de la cámara normal")] [SerializeField] private float normalCameraDistance = 3f;
     [Tooltip("Distancia de la cámara en sprint")] [SerializeField] private float sprintCameraDistance = 2f;
+    [Tooltip("Renderizador")] [SerializeField] private SkinnedMeshRenderer renderer3d;
+    [Tooltip("Tiempo invulnerable")] [SerializeField] [Range(0.1f, 5f)] private float invulnerableDuration = 1f;
     
     [Header("Vida")]
     [Tooltip("Vida inicial del jugador")] [SerializeField] [Range(1, 100)] private int maxHealth = 10;
@@ -67,6 +69,8 @@ public class PlayerController : MonoBehaviour, IHealth
     [Tooltip("Velocidad 3D")] [SerializeField] private Vector3 velocity3D;
     [Tooltip("Saltando")] [SerializeField] private bool isJumping;
     [Tooltip("Dañado")] [SerializeField] private bool isDamaged;
+    [Tooltip("Parpadeando")] [SerializeField] private bool isInvulnerable;
+    [Tooltip("Invulnerable hasta")] [SerializeField] private float blinkingTimer;
     [Tooltip("Vector del golpe")] [SerializeField] private Vector3 hitVector;
     
     private static readonly int HSpeed = Animator.StringToHash("HSpeed");
@@ -125,18 +129,10 @@ public class PlayerController : MonoBehaviour, IHealth
     private void Update()
     {
         timer += Time.deltaTime;
-        if (isRunning)
-        {
-            if (followCamera.CameraDistance > sprintCameraDistance)
-                followCamera.CameraDistance -= Time.deltaTime;
-        }
-        else
-        {
-            if (followCamera.CameraDistance < normalCameraDistance)
-                followCamera.CameraDistance += Time.deltaTime;
-        }
+        SprintAnim();
+        BlinkingAnim();
     }
-
+    
     private void FixedUpdate()
     {
         IsGrounded();
@@ -245,6 +241,43 @@ public class PlayerController : MonoBehaviour, IHealth
         animator.SetBool(Grounded, isGrounded);
     }
     #endregion Movement
+
+    #region Animation
+
+    /// <summary>
+    /// Acerca la cámara durante un sprint y la aleja el resto del tiempo
+    /// </summary>
+    private void SprintAnim()
+    {
+        if (isRunning)
+        {
+            if (followCamera.CameraDistance > sprintCameraDistance)
+                followCamera.CameraDistance -= Time.deltaTime;
+        }
+        else
+        {
+            if (followCamera.CameraDistance < normalCameraDistance)
+                followCamera.CameraDistance += Time.deltaTime;
+        }
+    }
+    
+    /// <summary>
+    /// Hace parpadear intermitentemente el personaje tras recibir daño
+    /// </summary>
+    private void BlinkingAnim()
+    {
+        if (isInvulnerable)
+        {
+            renderer3d.enabled = !renderer3d.enabled;
+            if (timer >= blinkingTimer)
+            {
+                isInvulnerable = false;
+                renderer3d.enabled = true;
+            }
+        }
+    }
+
+    #endregion
     
     #region Vida
 
@@ -284,6 +317,8 @@ public class PlayerController : MonoBehaviour, IHealth
         if (Health <= 0) HandleDeath();
         OnHealthChange.Invoke();
         audioSource.PlayOneShot(sfxDamage);
+        isInvulnerable = true;
+        blinkingTimer = timer + invulnerableDuration;
     }
 
     /// <summary>
@@ -293,6 +328,7 @@ public class PlayerController : MonoBehaviour, IHealth
     /// <param name="damageOrigin">Origen del daño</param>
     public void TakeDamage(int amount, Vector3 damageOrigin)
     {
+        if (isInvulnerable) return;
         TakeDamage(amount);
         isDamaged = true;
         hitVector = (transform.position + transform.up) - damageOrigin;
