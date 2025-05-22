@@ -11,6 +11,7 @@ public class Portal : MonoBehaviour
         if (other.TryGetComponent<PlayerController>(out var player))
         {
             player.transform.position = destination.position;
+            player.gravityController.gravityOrigin = destinationGravity;
         }
     }
 }
