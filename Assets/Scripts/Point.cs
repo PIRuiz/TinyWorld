@@ -10,6 +10,8 @@ public class Point : MonoBehaviour
     
     [Tooltip("Tiempo de ejecución")] [SerializeField] private float timer;
 
+    [Tooltip("Tiempo de refresco")] [SerializeField] [Range(0.1f, 5f)] private float refresh = 1f;
+
     private void Start()
     {
         GetNewTarget();
@@ -18,13 +20,13 @@ public class Point : MonoBehaviour
     private void Update()
     {
         timer += Time.deltaTime;
-        if (timer >= 3)
+        if (timer >= refresh)
         {
             timer = 0;
             GetNewTarget();
         }
         transform.LookAt(target.transform.position);
-        distanceText.text = $"Distance: {Vector3.Distance(target.transform.position, transform.position):F}";
+        distanceText.text = $"{Vector3.Distance(target.transform.position, transform.position):F} M";
     }
     
     private void GetNewTarget()

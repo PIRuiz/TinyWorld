@@ -697,7 +697,7 @@ MonoBehaviour:
   sprintCameraDistance: 2
   renderer3d: {fileID: 5341463940011028174}
   invulnerableDuration: 1
-  maxHealth: 10
+  maxHealth: 8
   sfxDamage: {fileID: 8300000, guid: 404ca2d1d21730044a31ca5f727a317b, type: 3}
   sfxJump: {fileID: 8300000, guid: e62dfc92b3df56742adf2307e205c50b, type: 3}
   audioSource: {fileID: 1585093569164037824}
