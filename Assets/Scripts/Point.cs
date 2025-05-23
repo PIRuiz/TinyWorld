@@ -33,7 +33,7 @@ public class Point : MonoBehaviour
     {
         if (GameManager.Instance.targets.Count == 0)
         {
-            gameObject.SetActive(false);
+            target = GameManager.Instance.finalTarget;
             return;
         }
         GameObject temp = GameManager.Instance.targets[0];

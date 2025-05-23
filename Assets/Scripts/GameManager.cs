@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("Instancia")] public static GameManager Instance;
     [Tooltip("Lista de Objetivos")] public List<GameObject> targets;
     [Tooltip("Objetivos restantes")] public int remainingTargets;
+    [Tooltip("Objetivo final")] public GameObject finalTarget;
     
     private void Awake()
     {
