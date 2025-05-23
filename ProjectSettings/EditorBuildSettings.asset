@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: fc2eaec0931b3304fb0043c6654d453d
+  - enabled: 1
     path: Assets/Scenes/LittlePlanet.unity
     guid: 9d0280b3ba51cfd4680a0270b1a989cb
   m_configObjects:
