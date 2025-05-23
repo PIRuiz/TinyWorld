@@ -4,6 +4,9 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// Manager de la UI del juego
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     [Header("Audio Mixers con los que controlar el volumen")]

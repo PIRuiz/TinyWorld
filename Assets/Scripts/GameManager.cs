@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Manager general del juego
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     [Tooltip("Instancia")] public static GameManager Instance;
@@ -31,6 +34,9 @@ public class GameManager : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
+    /// <summary>
+    /// Contar objetos coleccionables
+    /// </summary>
     private void CountCollectibles()
     {
         remainingTargets = targets.Count;
@@ -47,6 +53,9 @@ public class GameManager : MonoBehaviour
         return remainingTargets;
     }
 
+    /// <summary>
+    /// Pausar el juego
+    /// </summary>
     public void PauseGame()
     {
         Time.timeScale = 0;
