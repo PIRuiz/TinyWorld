@@ -83,16 +83,6 @@ public class PlayerController : MonoBehaviour, IHealth
     {
         movementInput = input.Get<Vector2>();
     }
-
-    private void OnLook(InputValue input)
-    {
-        var lookInput = input.Get<Vector2>();
-        if (lookInput == Vector2.zero)
-        {
-            followCamera.VerticalAxis.Value = 17.5f;
-            followCamera.HorizontalAxis.Value = 0;
-        }
-    }
     
     /// <summary>
     /// Que ocurre al usar el botón saltar
@@ -116,7 +106,17 @@ public class PlayerController : MonoBehaviour, IHealth
     {
         isRunning = input.isPressed;
     }
-    
+
+    private void OnResetCamera(InputValue input)
+    {
+        followCamera.VerticalAxis.Value = 17.5f;
+        followCamera.HorizontalAxis.Value = 0;
+    }
+
+    private void OnPause(InputValue input)
+    {
+        GameManager.Instance.PauseGame();
+    }
     #endregion
 
     #region Unity

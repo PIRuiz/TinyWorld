@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     [Tooltip("Texto coleccionables")] [SerializeField]
     private TextMeshProUGUI collectiblesText;
+    [Tooltip("Panel Opciones")] [SerializeField]
+    private GameObject optionsPanel;
     
     private void Awake()
     {
@@ -20,7 +22,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var obj in targets) remainingTargets++;
         finalTarget.SetActive(false);
         UpdateCollectibles();
     }
@@ -30,8 +31,25 @@ public class GameManager : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
-    public void UpdateCollectibles()
+    private void CountCollectibles()
     {
+        remainingTargets = targets.Count;
+    }
+
+    /// <summary>
+    /// Cuenta cuantos artículos coleccionables quedan, actualiza el texto en canvas y devuelve el valor
+    /// </summary>
+    /// <returns>Cantidad de coleccionables restantes</returns>
+    public int UpdateCollectibles()
+    {
+        CountCollectibles();
         collectiblesText.text = $"x {remainingTargets}";
+        return remainingTargets;
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        optionsPanel.SetActive(true);
     }
 }
