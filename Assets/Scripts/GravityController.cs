@@ -10,7 +10,7 @@ public class GravityController : MonoBehaviour
     [Tooltip("Vector al origen")] public Vector3 gravityVector;
     [Tooltip("Fuerza de la gravedad")] [SerializeField] public float gravity = 9.81f;
     [Tooltip("Fuerza de la auto orientación")] [SerializeField] private float autoOrientForce = 1f;
-    [Tooltip("Rigidbody")] [SerializeField] private Rigidbody rb;
+    [Tooltip("Rigidbody")] public Rigidbody rb;
     [Tooltip("Girar Automáticamente")] [SerializeField] private bool autoRotate = true;
     [Tooltip("Aplicar Gravedad")] [SerializeField] private bool applyGravity = true;
 
