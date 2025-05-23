@@ -116,6 +116,7 @@ public class PlayerController : MonoBehaviour, IHealth
     private void OnPause(InputValue input)
     {
         GameManager.Instance.PauseGame();
+        ShowCursor();
     }
     #endregion
 
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour, IHealth
     private void Start()
     {
         rb3D.maxLinearVelocity = maxSpeed;
+        InitCursor();
     }
 
     private void Update()
@@ -296,6 +298,21 @@ public class PlayerController : MonoBehaviour, IHealth
     }
 
     #endregion
+    
+    /// <summary>
+    /// Ocultar cursor y limitarlo a la ventana de juego
+    /// </summary>
+    private void InitCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    private void ShowCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
     
     #region Vida
 

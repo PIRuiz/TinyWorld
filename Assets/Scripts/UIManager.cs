@@ -113,6 +113,18 @@ public class UIManager : MonoBehaviour
         return linear;
     }
 
+    public void ShowCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }
+
+    public void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+    
     private void Start()
     {
         LoadLevelAnim.SetActive(false);
