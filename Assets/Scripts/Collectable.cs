@@ -9,6 +9,8 @@ public class Collectable : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             GameManager.Instance.remainingTargets--;
+            if (GameManager.Instance.remainingTargets == 0)
+                GameManager.Instance.finalTarget.SetActive(true);
             gameObject.SetActive(false);
             GameManager.Instance.targets.Remove(gameObject);
         }

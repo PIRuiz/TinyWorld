@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         foreach (var obj in targets) remainingTargets++;
+        finalTarget.SetActive(false);
     }
 
     private void OnDisable()
