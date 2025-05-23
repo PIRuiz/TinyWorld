@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,6 +9,9 @@ public class GameManager : MonoBehaviour
     [Tooltip("Lista de Objetivos")] public List<GameObject> targets;
     [Tooltip("Objetivos restantes")] public int remainingTargets;
     [Tooltip("Objetivo final")] public GameObject finalTarget;
+
+    [Tooltip("Texto coleccionables")] [SerializeField]
+    private TextMeshProUGUI collectiblesText;
     
     private void Awake()
     {
@@ -18,10 +22,16 @@ public class GameManager : MonoBehaviour
     {
         foreach (var obj in targets) remainingTargets++;
         finalTarget.SetActive(false);
+        UpdateCollectibles();
     }
 
     private void OnDisable()
     {
         if (Instance == this) Instance = null;
+    }
+
+    public void UpdateCollectibles()
+    {
+        collectiblesText.text = $"x {remainingTargets}";
     }
 }

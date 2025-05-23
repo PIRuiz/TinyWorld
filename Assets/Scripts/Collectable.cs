@@ -13,6 +13,7 @@ public class Collectable : MonoBehaviour
                 GameManager.Instance.finalTarget.SetActive(true);
             gameObject.SetActive(false);
             GameManager.Instance.targets.Remove(gameObject);
+            GameManager.Instance.UpdateCollectibles();
         }
     }
 }

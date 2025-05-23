@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour, IHealth
     
     [Header("Animación")]
     [Tooltip("Animator")] [SerializeField] private Animator animator;
-    [Tooltip("Camara de persecución")] [SerializeField] private CinemachineThirdPersonFollow followCamera;
+    [Tooltip("Camara de persecución")] [SerializeField] private CinemachineOrbitalFollow followCamera;
     [Tooltip("Distancia de la cámara normal")] [SerializeField] private float normalCameraDistance = 3f;
     [Tooltip("Distancia de la cámara en sprint")] [SerializeField] private float sprintCameraDistance = 2f;
     [Tooltip("Renderizador")] [SerializeField] private SkinnedMeshRenderer renderer3d;
@@ -82,6 +82,16 @@ public class PlayerController : MonoBehaviour, IHealth
     private void OnMove(InputValue input)
     {
         movementInput = input.Get<Vector2>();
+    }
+
+    private void OnLook(InputValue input)
+    {
+        var lookInput = input.Get<Vector2>();
+        if (lookInput == Vector2.zero)
+        {
+            followCamera.VerticalAxis.Value = 17.5f;
+            followCamera.HorizontalAxis.Value = 0;
+        }
     }
     
     /// <summary>
@@ -259,13 +269,13 @@ public class PlayerController : MonoBehaviour, IHealth
     {
         if (isRunning)
         {
-            if (followCamera.CameraDistance > sprintCameraDistance)
-                followCamera.CameraDistance -= Time.deltaTime;
+            if (followCamera.Radius > sprintCameraDistance)
+                followCamera.Radius -= Time.deltaTime;
         }
         else
         {
-            if (followCamera.CameraDistance < normalCameraDistance)
-                followCamera.CameraDistance += Time.deltaTime;
+            if (followCamera.Radius < normalCameraDistance)
+                followCamera.Radius += Time.deltaTime;
         }
     }
     
