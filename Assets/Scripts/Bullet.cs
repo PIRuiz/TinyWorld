@@ -43,7 +43,6 @@ public class Bullet : MonoBehaviour
         if (!other.gameObject.CompareTag("Enemy") && !other.gameObject.CompareTag("Trigger"))
         {
             gameObject.SetActive(false);
-            Debug.Log($"Chocado con {other.gameObject.name}");
         }
     }
 }
