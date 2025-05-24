@@ -40,6 +40,10 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.gameObject.CompareTag("Enemy")) gameObject.SetActive(false);
+        if (!other.gameObject.CompareTag("Enemy") && !other.gameObject.CompareTag("Trigger"))
+        {
+            gameObject.SetActive(false);
+            Debug.Log($"Chocado con {other.gameObject.name}");
+        }
     }
 }
