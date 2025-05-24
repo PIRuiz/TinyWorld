@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 /// <summary>
 /// Controla la lógica de la torreta
@@ -77,12 +75,10 @@ public class Turret : MonoBehaviour
     /// </summary>
     private void RotateTurret()
     {
+        Vector3 desiredVector;
         if (targetLocked)
         {
-            targetVector = Vector3.Slerp(
-                targetVector,
-                player.transform.position + player.transform.up.normalized,
-                Time.deltaTime);
+            desiredVector = player.transform.position + player.transform.up.normalized;
         }
         else
         {
@@ -90,13 +86,12 @@ public class Turret : MonoBehaviour
                 transform.right * Mathf.Cos(timer) +
                 transform.forward * Mathf.Sin(timer);
 
-            Vector3 newVector = transform.position + circularOffset + transform.up * verticalAdjustment;
-            targetVector = (Vector3.Slerp(
-                targetVector,
-                newVector,
-                Time.deltaTime));
+            desiredVector = transform.position + circularOffset + transform.up * verticalAdjustment;
+            
         }
-        turretHead.transform.LookAt(targetVector);
+        targetVector = (Vector3.Slerp(targetVector, desiredVector, Time.deltaTime));
+        //turretHead.transform.LookAt(targetVector);
+        turretHead.transform.rotation = Quaternion.LookRotation(targetVector - turretHead.transform.position, transform.up);
     }
 
     /// <summary>
