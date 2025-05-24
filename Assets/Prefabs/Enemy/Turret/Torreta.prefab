@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 6034435601410388834}
   m_Layer: 0
   m_Name: Torreta
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13e472035d6dfaf41a38f9317b48be36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objPrefab: {fileID: 3413573763000896694, guid: 87c16a5ed1c421d4c84a168596568af0, type: 3}
+  objPrefab: {fileID: 4549956393751790932, guid: 309a6cc831e11384896e9ad15b9f8264, type: 3}
   amountToPool: 5
   maxAmount: 20
 --- !u!82 &9002357047504658899
