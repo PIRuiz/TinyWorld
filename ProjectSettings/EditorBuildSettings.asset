@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Intro.unity
     guid: fc2eaec0931b3304fb0043c6654d453d
   - enabled: 1
+    path: Assets/Scenes/PlanetHopping.unity
+    guid: 48ac91ee29c49914da247edb1a597c97
+  - enabled: 1
     path: Assets/Scenes/LittlePlanet.unity
     guid: 9d0280b3ba51cfd4680a0270b1a989cb
   m_configObjects:
