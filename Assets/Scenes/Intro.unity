@@ -991,7 +991,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -764, y: 638}
+  m_AnchoredPosition: {x: 30, y: 100}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &491297442
@@ -2162,7 +2162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 931, y: -914}
+  m_AnchoredPosition: {x: 75, y: -325}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1056753629
@@ -2374,7 +2374,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -4756,7 +4756,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 285, y: 93}
+  m_AnchoredPosition: {x: 260, y: 93}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1680303464
@@ -5143,15 +5143,19 @@ MonoBehaviour:
     3D Artis: Ferna
 
     Kenney.nl
-    Lots of props
+    Lots of 3D props, music and SFX and On Screen Controls UI
 
-    Hurt SFX Sonniss.com - GDC 2016 - Bottle Rocket FX - Grunt_Pain_Male_BB_10_SCREAM
-    LIBRARY_BRFX-004
+    Sonniss.com -
+    GDC2023 - Justsoundeffects - Futuristic Interface
 
-    10 Skyboxes Pack - Wello Soft - https://assetstore.unity.com/packages/2d/textures-materials/sky/10-skyboxes-pack-day-night-32236
+    Sonniss.com - GDC2018
+    - The Chris Alan - Little Fighter Guy
 
-    Water
-    Stylized Shader Orto & Perspective Camera - AureDevGames - https://assetstore.unity.com/packages/vfx/shaders/water-stylized-shader-orto-perspective-camera-297566
+    10 Skyboxes Pack - Wello Soft - Unity
+    Asset Store
+
+    Water Stylized Shader Orto & Perspective Camera - AureDevGames
+    - Unity Asset Store
 
 '
   m_isRightToLeft: 0

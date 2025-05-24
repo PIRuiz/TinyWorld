@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (!Instance) Instance = this;
+        targets = new List<GameObject>();
+        foreach (var collectable in FindObjectsByType<Collectable>(FindObjectsSortMode.None))
+        {
+            targets.Add(collectable.gameObject);
+        }
     }
 
     private void Start()
