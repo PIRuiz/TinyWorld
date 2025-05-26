@@ -5282,28 +5282,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Programmer: PabloIR
-
-    3D Artist: Ale
-
-    3D Artis: Ferna
-
-    Kenney.nl
-    Lots of 3D props, music and SFX and On Screen Controls UI
-
-    Sonniss.com -
-    GDC2023 - Justsoundeffects - Futuristic Interface
-
-    Sonniss.com - GDC2018
-    - The Chris Alan - Little Fighter Guy
-
-    10 Skyboxes Pack - Wello Soft - Unity
-    Asset Store
-
-    Water Stylized Shader Orto & Perspective Camera - AureDevGames
-    - Unity Asset Store
-
-'
+  m_text: "Alejandro Perez Jodar: UI Buttons, UI Health, UI Arrow, Enemies, Meteor
+    & Geyser\nFernandoGuzman: SpaceShip & Lava Planet level design \nProgrammer &
+    Everything else: PabloIR\nKenney.nl Lots assets everything else\nSonniss.com
+    - GDC2023 - Justsoundeffects - Futuristic Interface\nSonniss.com - GDC2018 -
+    The Chris Alan - Little Fighter Guy\n10 Skyboxes Pack - Wello Soft - Unity Asset
+    Store\nWater Stylized Shader Orto & Perspective Camera - AureDevGames - Unity
+    Asset Store\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
